@@ -48,7 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fruitType: 4
+  rb: {fileID: 0}
   isDeleted: 0
+  explosionParticles: {fileID: 8266972333624326433, guid: d93c273f5f9dc2544b7ec2c616ab5ac3, type: 3}
 --- !u!212 &8752268138886906733
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -115,7 +117,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 3
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.2
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
