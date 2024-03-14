@@ -9,6 +9,7 @@ public class Fruit : MonoBehaviour
 	public bool isDeleted;
 
 	public GameObject explosionParticles;
+	public GameObject mergeParticles;
 
 	void Awake()
 	{
@@ -38,8 +39,9 @@ public class Fruit : MonoBehaviour
 		{
 			// this is slower than other fruit
 			// spawn new fruit in my position
-			game.SpawnNewFruit(transform.position, fruitType + 1);
+			var newFruit = game.SpawnNewFruit(transform.position, fruitType + 1);
 			game.AddScore(fruit.fruitType);
+			Instantiate(mergeParticles, newFruit.transform.position, Quaternion.identity);
 			
 			isDeleted = true;
 			fruit.isDeleted = true;

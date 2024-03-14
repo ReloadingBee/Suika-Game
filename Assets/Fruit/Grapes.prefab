@@ -51,6 +51,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   isDeleted: 0
   explosionParticles: {fileID: 8266972333624326433, guid: d93c273f5f9dc2544b7ec2c616ab5ac3, type: 3}
+  mergeParticles: {fileID: 5968497983880434928, guid: a3dbb2e8a2d6f6c47bb4f854c7b41d85, type: 3}
 --- !u!212 &4992302222533227968
 SpriteRenderer:
   m_ObjectHideFlags: 0
