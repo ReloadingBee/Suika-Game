@@ -9,11 +9,13 @@ public class NextFruit : MonoBehaviour
 	void Start()
 	{
 		rend = gameObject.GetComponent<SpriteRenderer>();
+		rend.enabled = false;
 	}
 	void Update()
 	{
-		rend.sprite = fruitTextures[Game.instance.nextFruit];
+		if (rend.enabled) return;
 		
+		rend.sprite = fruitTextures[Game.instance.nextFruit];
 		rend.enabled = !Game.instance.isGameOver;
 	}
 }

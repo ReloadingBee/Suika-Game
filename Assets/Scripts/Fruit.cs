@@ -54,8 +54,9 @@ public class Fruit : MonoBehaviour
 	{
 		if(isDeleted) Destroy(gameObject);
 
-		if (!game.isGameOver)
-			return;
+		if (!game.isGameOver) return;
+		
+		// game over - destroy all fruit
 		if (game.timeSinceGameOver >= Mathf.Abs(transform.position.y / 2f))
 		{
 			Instantiate(explosionParticles, transform.position, Quaternion.identity);

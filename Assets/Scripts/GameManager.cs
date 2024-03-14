@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (!isInMenu)
 		{
+			// hide menu
 			menuLoaded = false;
 			gameOverCanvas.SetActive(false);
 			scoreText.gameObject.SetActive(true);
@@ -45,12 +46,13 @@ public class GameManager : MonoBehaviour
 			return;
 		}
 
+		// play again
 		if (Input.GetMouseButtonDown(0) && !GameObject.FindGameObjectWithTag("Fruit"))
 		{
 			StartGame();
 		}
 		
-		// load menu
+		// load menu only once
 		if (menuLoaded) return;
 		menuLoaded = true;
 		

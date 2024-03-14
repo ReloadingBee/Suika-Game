@@ -26,8 +26,8 @@ public class Game : MonoBehaviour
 	public int currentFruit;
 	public int nextFruit;
 	
-	public bool isFalling;
-	public bool isThinking;
+	public bool isCooldownEnabled;
+	public bool hasFruitSpawned;
 	public bool isGameOver;
 
 	public float timeSinceGameOver;
@@ -42,14 +42,16 @@ public class Game : MonoBehaviour
 	public AudioClip popSound;
 	public AudioClip throwSound;
 
+	public UnityEvent onFruitAppeared;
+
 	void Awake()
 	{
 		if (instance != null) Destroy(gameObject);
 		instance = this;
 		
 		isGameOver = false;
-		isFalling = false;
-		isThinking = false;
+		isCooldownEnabled = false;
+		hasFruitSpawned = false;
 		timeSinceGameOver = 0f;
 		currentFruit = Random.Range(0, 3);
 		nextFruit = Random.Range(0, 3);
@@ -61,41 +63,48 @@ public class Game : MonoBehaviour
 	}
 	async void Update()
 	{
-		//if(Input.GetKeyDown(KeyCode.M)) GameOver();
 		if (isGameOver)
 		{
 			timeSinceGameOver += Time.deltaTime;
 			return;
 		}
-		if (isFalling) return;
-
-		if (isThinking)
+		if (isCooldownEnabled) return;
+		
+		// fruit has already been spawned,
+		// move it to the mouse position
+		if (hasFruitSpawned)
 		{
 			MoveFruitToMouse();
 			return;
 		}
 
-		var hit = Physics2D.Raycast(new Vector2(-2.5f, 3f), Vector2.right, 5f);
-		if (hit && hit.collider.CompareTag("Fruit"))
+		// new fruit has to be spawned
+		
+		// check for game over every time,
+		// when new fruit is spawned
+		if (IsGameOver())
 		{
 			GameOver();
-			return;
 		}
-
-		isThinking = true;
-
+		
+		// spawn new fruit
+		hasFruitSpawned = true;
 		fruit = SpawnNewFruit(new Vector2(0, 4), currentFruit);
 		fruit.rb.gravityScale = 0;
+		MoveFruitToMouse();
 		
+		onFruitAppeared.Invoke();
 
+		// wait until mouse is clicked
 		await new WaitUntil(() => Input.GetKeyDown(KeyCode.Mouse0));
-
+		
+		if (!fruit) return; // to avoid errors after game over screen
+		
 		// Mouse clicked - fall
 		MoveFruitToMouse();
-		if (!fruit) return;
 		fruit.rb.gravityScale = 1;
 		fruit.rb.angularVelocity = Random.Range(-80f, 80f);
-		isFalling = true;
+		isCooldownEnabled = true;
 		
 		source.PlayOneShot(throwSound, 0.5f);
 
@@ -105,8 +114,8 @@ public class Game : MonoBehaviour
 		currentFruit = nextFruit;
 		nextFruit = Random.Range(0, 3);
 		
-		isFalling = false;
-		isThinking = false;
+		isCooldownEnabled = false;
+		hasFruitSpawned = false;
 
 		void MoveFruitToMouse()
 		{
@@ -122,6 +131,12 @@ public class Game : MonoBehaviour
 				_ => Mathf.Clamp(x, -2.5f, 2.5f)
 			};
 			fruit.transform.position = new Vector2(x, 4);
+		}
+
+		bool IsGameOver()
+		{
+			var hit = Physics2D.Raycast(new Vector2(-2.5f, 3f), Vector2.right, 5f);
+			return hit && hit.collider.CompareTag("Fruit");
 		}
 	}
 
@@ -140,8 +155,8 @@ public class Game : MonoBehaviour
 	public void StartGame()
 	{
 		score = 0;
-		isFalling = false;
-		isThinking = false;
+		isCooldownEnabled = false;
+		hasFruitSpawned = false;
 		timeSinceGameOver = 0f;
 		currentFruit = Random.Range(0, 3);
 		nextFruit = Random.Range(0, 3);

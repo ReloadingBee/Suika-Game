@@ -588,6 +588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 745988016}
   - component: {fileID: 745988017}
+  - component: {fileID: 745988018}
   m_Layer: 0
   m_Name: Deathzone
   m_TagString: Untagged
@@ -662,6 +663,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &745988018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745988015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b2093a002882a41b149b89a0ceccc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastY: 1.5
 --- !u!1 &943724054
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,13 +798,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1498,8 +1512,11 @@ MonoBehaviour:
   isThinking: 0
   isGameOver: 0
   timeSinceGameOver: 0
-  popSound: {fileID: 8300000, guid: dfa8e8dfd46e92349a54614c60c5d227, type: 3}
+  popSound: {fileID: 8300000, guid: 29f57942c715f2847a37ab8debb4bcf4, type: 3}
   throwSound: {fileID: 8300000, guid: caed2a26b5c69c143be48d043f59bf94, type: 3}
+  onFruitAppeared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &2118057906
 Transform:
   m_ObjectHideFlags: 0
