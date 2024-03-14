@@ -134,7 +134,7 @@ public class Game : MonoBehaviour
 	public void AddScore(int fruitType)
 	{
 		score += pointsForFruitTypes[fruitType];
-		source.PlayOneShot(popSound);
+		source.PlayOneShot(popSound, 10f); // it is very quiet
 	}
 
 	public void StartGame()
