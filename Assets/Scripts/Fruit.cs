@@ -1,18 +1,19 @@
-using System;
 using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
 	public int fruitType;
-	Rigidbody2D rb;
+	public Rigidbody2D rb;
 	Game game;
 
-	[SerializeField] bool isDeleted;
+	public bool isDeleted;
 
-	void Start()
+	public GameObject explosionParticles;
+
+	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		game = FindObjectOfType<Game>();
+		game = Game.instance;
 		isDeleted = false;
 	}
 
@@ -26,30 +27,37 @@ public class Fruit : MonoBehaviour
 		// only merge once before deleting!
 		if (isDeleted || fruit.isDeleted) return;
 
-		if (fruit.fruitType == fruitType)
+		if (fruit.fruitType != fruitType) return;
+		
+		// fruit types match - combine
+		// check which one's velocity is higher
+		// delete both fruits and spawn another one
+		// in the position of the fruit with a lower velocity
+		var fruitVelocity = fruit.rb.velocity.magnitude;
+		if (fruitVelocity >= rb.velocity.magnitude)
 		{
-			// fruit types match - combine
-			// check which one's velocity is higher
-			// delete both fruits and spawn another one
-			// in the position of the fruit with a lower velocity
-			var fruitVelocity = fruit.rb.velocity.magnitude;
-			if (fruitVelocity >= rb.velocity.magnitude)
-			{
-				// this is slower than other fruit
-				// spawn new fruit in my position
-				game.SpawnNewFruit(transform.position, fruitType + 1);
-				// only one if statement avoids duplicate fruits from spawning
-				// since only one fruit has a lower velocity
-				isDeleted = true;
-				fruit.isDeleted = true;
-				Destroy(other.gameObject);
-				Destroy(gameObject);
-			}
+			// this is slower than other fruit
+			// spawn new fruit in my position
+			game.SpawnNewFruit(transform.position, fruitType + 1);
+			game.AddScore(fruit.fruitType);
+			
+			isDeleted = true;
+			fruit.isDeleted = true;
+			Destroy(other.gameObject);
+			Destroy(gameObject);
 		}
 	}
 
 	void Update()
 	{
 		if(isDeleted) Destroy(gameObject);
+
+		if (!game.isGameOver)
+			return;
+		if (game.timeSinceGameOver >= Mathf.Abs(transform.position.y / 2f))
+		{
+			Instantiate(explosionParticles, transform.position, Quaternion.identity);
+			isDeleted = true;
+		}
 	}
 }
